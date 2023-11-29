@@ -8,6 +8,11 @@ pipeline{
                 }
             }
         }
+        stage('Terraform destroy'){
+            steps{
+                sh "terraform destroy -auto-approve"
+            }
+        }
         stage('Terraform init'){
             steps{
                 sh "terraform init"
