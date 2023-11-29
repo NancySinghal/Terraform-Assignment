@@ -6,6 +6,7 @@ resource "aws_instance" "public_instance" {
   subnet_id     = aws_subnet.public_subnet.id
   vpc_security_group_ids = [aws_security_group.my_vpc_sg.id]
   associate_public_ip_address = true
+  availability_zone = "ap-south-1a"
 
   tags = {
     Name = "public-instance"
@@ -44,6 +45,7 @@ resource "aws_instance" "private_instance" {
   key_name      = aws_key_pair.my_key_pair.key_name
   subnet_id     = aws_subnet.private_subnet.id
   vpc_security_group_ids = [aws_security_group.my_vpc_sg.id]
+  availability_zone = "ap-south-1a"
 
   tags = {
     Name = "private-instance"
