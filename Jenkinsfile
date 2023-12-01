@@ -10,30 +10,22 @@ pipeline{
         }
         stage('Terraform destroy'){
             steps{
-                withCredentials(credentials='aws-credentials'){
-                    sh "terraform destroy -auto-approve"
-                }
+                sh "terraform destroy -auto-approve"
             }
         }
         stage('Terraform init'){
             steps{
-                withAWS(credentials='aws-credentials'){
-                    sh "terraform init"
-                }
+                sh "terraform init"
             }
         }
         stage('Terraform plan'){
             steps{
-                withAWS(credentials='aws-credentials'){
-                    sh "terraform plan"
-                }
+                sh "terraform plan"
             }
         }
         stage('Terraform apply'){
             steps{
-                withAWS(credentials='aws-credentials'){
-                    sh "terraform apply -auto-approve"
-                }
+                sh "terraform apply -auto-approve"
             }
         }
     }
