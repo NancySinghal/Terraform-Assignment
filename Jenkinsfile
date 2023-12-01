@@ -20,29 +20,10 @@ pipeline{
                 sh "terraform init"
             }
         }
-        stage('Terraform plan'){
-            steps{
-                sh "terraform plan"
-            }
-        }
         stage('Terraform apply'){
             steps{
                 sh "terraform apply -auto-approve"
                 sh "cp /home/sigmoid/.jenkins/workspace/terraform-pipeline/my-key-pair.pem /home/sigmoid/Nancy/Terraform-Assignment/"
-            }
-        }
-        stage('Get EC2 Instance IP') {
-            steps{
-                script {
-                    EC2_INSTANCE_IP = sh(script: 'terraform output -raw public_instance_ip', returnStdout: true).trim()
-                }
-            }
-        }
-        stage('Configure Private Key on EC2') {
-            steps {
-                script {
-                    sh "scp -i ${PRIVATE_KEY_PATH} ${PRIVATE_KEY_PATH} ${EC2_USER}@${EC2_INSTANCE_IP}:~/${KEY_PAIR_NAME}.pem"
-                }
             }
         }
         stage('Set Destroy Flag') {
