@@ -10,7 +10,7 @@ pipeline{
         }
         stage('Terraform destroy'){
             steps{
-                withAWS(credentials='aws-credentials'){
+                withCredentials(credentials='aws-credentials'){
                     sh "terraform destroy -auto-approve"
                 }
             }
