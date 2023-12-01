@@ -17,6 +17,7 @@ pipeline{
         }
         stage('Terraform init'){
             steps{
+                sh "aws ec2 delete-key-pair --key-name ${KEY_PAIR_NAME}"
                 sh "terraform init"
             }
         }
