@@ -1,16 +1,18 @@
 pipeline{
     agent any
     stages{
+        environment {
+            DESTROY_RESOURCES = false
+            AWS_REGION = "ap-south-1"
+            PRIVATE_KEY_PATH = "/home/sigmoid/Nancy/Terraform-Assignment/my-key-pair.pem"
+            EC2_USER = "ubuntu"
+            KEY_PAIR_NAME = "my-key-pair"
+        }
         stage('Checkout'){
             steps{
                 script{
                     checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'github-credentials', url: 'https://github.com/NancySinghal/Terraform-Assignment']])
                 }
-            }
-        }
-        stage('Terraform destroy'){
-            steps{
-                sh "terraform destroy -auto-approve"
             }
         }
         stage('Terraform init'){
@@ -26,6 +28,35 @@ pipeline{
         stage('Terraform apply'){
             steps{
                 sh "terraform apply -auto-approve"
+            }
+        }
+        stage('Get EC2 Instance IP') {
+            script {
+                EC2_INSTANCE_IP = sh(script: 'terraform output -raw public_instance_ip', returnStdout: true).trim()
+            }
+        }
+        stage('Configure Private Key on EC2') {
+            steps {
+                script {
+                    sh "scp -i ${PRIVATE_KEY_PATH} ${PRIVATE_KEY_PATH} ${EC2_USER}@${EC2_INSTANCE_IP}:~/${KEY_PAIR_NAME}.pem"
+                }
+            }
+        }
+        stage('Set Destroy Flag') {
+            steps {
+                script {
+                    DESTROY_RESOURCES = true
+                }
+            }
+        }
+        stage('Terraform Destroy') {
+            when {
+                expression { DESTROY_RESOURCES == true }
+            }
+            steps {
+                script {
+                    sh 'terraform destroy -auto-approve'
+                }
             }
         }
     }

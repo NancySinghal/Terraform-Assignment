@@ -37,6 +37,10 @@ resource "aws_instance" "public_instance" {
   }
 }
 
+output "public_instance_ip" {
+    value = aws_instance.public_instance.public_ip
+  }
+
 // Private Instance
 resource "aws_instance" "private_instance" {
   ami           = "ami-0e27f6f1f255d553a"
