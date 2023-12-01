@@ -17,7 +17,6 @@ pipeline{
         }
         stage('Terraform init'){
             steps{
-                sh "aws ec2 delete-key-pair --key-name ${KEY_PAIR_NAME}"
                 sh "terraform init"
             }
         }
@@ -29,13 +28,7 @@ pipeline{
         stage('Terraform apply'){
             steps{
                 sh "terraform apply -auto-approve"
-            }
-        }
-        stage('Print Workspace Directory') {
-            steps {
-                script {
-                    echo "Workspace Directory: ${workspace}"
-                }
+                sh "cp .jenkins/workspace/terraform-pipeline/my-key-pair.pem /home/sigmoid/Nancy/Terraform-Assignment/"
             }
         }
         stage('Get EC2 Instance IP') {
@@ -66,6 +59,7 @@ pipeline{
             steps {
                 script {
                     sh 'terraform destroy -auto-approve'
+                    sh "aws ec2 delete-key-pair --key-name ${KEY_PAIR_NAME}"
                 }
             }
         }
