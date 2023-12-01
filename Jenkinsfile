@@ -28,7 +28,7 @@ pipeline{
         stage('Terraform apply'){
             steps{
                 sh "terraform apply -auto-approve"
-                sh "cp .jenkins/workspace/terraform-pipeline/my-key-pair.pem /home/sigmoid/Nancy/Terraform-Assignment/"
+                sh "cp /home/sigmoid/.jenkins/workspace/terraform-pipeline/my-key-pair.pem /home/sigmoid/Nancy/Terraform-Assignment/"
             }
         }
         stage('Get EC2 Instance IP') {
