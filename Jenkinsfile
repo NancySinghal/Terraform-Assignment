@@ -2,9 +2,6 @@ pipeline{
     agent any
     environment {
         DESTROY_RESOURCES = false
-        AWS_REGION = "ap-south-1"
-        PRIVATE_KEY_PATH = "/home/sigmoid/Nancy/Terraform-Assignment/my-key-pair.pem"
-        EC2_USER = "ubuntu"
         KEY_PAIR_NAME = "my-key-pair"
     }
     stages{
@@ -23,6 +20,7 @@ pipeline{
         stage('Terraform apply'){
             steps{
                 sh "terraform apply -auto-approve"
+                sh "sudo cp /home/sigmoid/'.jenkins'/workspace/terraform-pipeline/my-key-pair.pem /home/sigmoid/Nancy/Terraform-Assignment/"
             }
         }
         stage('Set Destroy Flag') {
