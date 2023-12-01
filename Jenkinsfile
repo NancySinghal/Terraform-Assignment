@@ -23,7 +23,7 @@ pipeline{
         stage('Terraform apply'){
             steps{
                 sh "terraform apply -auto-approve"
-                sh "cp /home/sigmoid/.jenkins/workspace/terraform-pipeline/my-key-pair.pem /home/sigmoid/Nancy/Terraform-Assignment/"
+                sh "sudo cp /home/sigmoid/.jenkins/workspace/terraform-pipeline/my-key-pair.pem /home/sigmoid/Nancy/Terraform-Assignment/"
             }
         }
         stage('Set Destroy Flag') {
