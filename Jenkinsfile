@@ -31,8 +31,10 @@ pipeline{
             }
         }
         stage('Get EC2 Instance IP') {
-            script {
-                EC2_INSTANCE_IP = sh(script: 'terraform output -raw public_instance_ip', returnStdout: true).trim()
+            steps{
+                script {
+                    EC2_INSTANCE_IP = sh(script: 'terraform output -raw public_instance_ip', returnStdout: true).trim()
+                }
             }
         }
         stage('Configure Private Key on EC2') {
