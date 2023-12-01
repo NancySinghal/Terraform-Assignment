@@ -30,6 +30,13 @@ pipeline{
                 sh "terraform apply -auto-approve"
             }
         }
+        stage('Print Workspace Directory') {
+            steps {
+                script {
+                    echo "Workspace Directory: ${workspace}"
+                }
+            }
+        }
         stage('Get EC2 Instance IP') {
             steps{
                 script {
